@@ -1,6 +1,6 @@
 package br.microservice.gotei13.web.rest;
 
-import br.microservice.gotei13.Gotei13App;
+import br.microservice.gotei13.Gotei13ServiceApp;
 import br.microservice.gotei13.web.rest.vm.LoggerVM;
 import ch.qos.logback.classic.AsyncAppender;
 import ch.qos.logback.classic.LoggerContext;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see LogsResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Gotei13App.class)
+@SpringBootTest(classes = Gotei13ServiceApp.class)
 public class LogsResourceIntTest {
 
     private MockMvc restLogsMockMvc;

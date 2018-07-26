@@ -1,9 +1,10 @@
 package br.microservice.gotei13.web.rest;
 
-import br.microservice.gotei13.Gotei13App;
+import br.microservice.gotei13.Gotei13ServiceApp;
 import br.microservice.gotei13.domain.Authority;
 import br.microservice.gotei13.domain.User;
 import br.microservice.gotei13.repository.UserRepository;
+import br.microservice.gotei13.repository.search.UserSearchRepository;
 import br.microservice.gotei13.security.AuthoritiesConstants;
 
 import br.microservice.gotei13.service.UserService;
@@ -42,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see UserResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Gotei13App.class)
+@SpringBootTest(classes = Gotei13ServiceApp.class)
 public class UserResourceIntTest {
 
     private static final String DEFAULT_LOGIN = "johndoe";
@@ -63,6 +64,14 @@ public class UserResourceIntTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    /**
+     * This repository is mocked in the br.microservice.gotei13.repository.search test package.
+     *
+     * @see br.microservice.gotei13.repository.search.UserSearchRepositoryMockConfiguration
+     */
+    @Autowired
+    private UserSearchRepository mockUserSearchRepository;
 
     @Autowired
     private UserService userService;
@@ -94,7 +103,7 @@ public class UserResourceIntTest {
         MockitoAnnotations.initMocks(this);
         cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
         cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).clear();
-        UserResource userResource = new UserResource(userService);
+        UserResource userResource = new UserResource(userService, mockUserSearchRepository);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -133,6 +142,7 @@ public class UserResourceIntTest {
     public void getAllUsers() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
+        mockUserSearchRepository.save(user);
 
         // Get all the users
         restUserMockMvc.perform(get("/api/users?sort=id,desc")
@@ -152,6 +162,7 @@ public class UserResourceIntTest {
     public void getUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
+        mockUserSearchRepository.save(user);
 
         assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNull();
 

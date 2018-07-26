@@ -1,8 +1,9 @@
 package br.microservice.gotei13.service;
 
-import br.microservice.gotei13.Gotei13App;
+import br.microservice.gotei13.Gotei13ServiceApp;
 import br.microservice.gotei13.config.Constants;
 import br.microservice.gotei13.domain.User;
+import br.microservice.gotei13.repository.search.UserSearchRepository;
 import br.microservice.gotei13.repository.UserRepository;
 import br.microservice.gotei13.service.dto.UserDTO;
 
@@ -23,6 +24,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -31,7 +34,7 @@ import static org.mockito.Mockito.when;
  * @see UserService
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Gotei13App.class)
+@SpringBootTest(classes = Gotei13ServiceApp.class)
 @Transactional
 public class UserServiceIntTest {
 
@@ -40,6 +43,14 @@ public class UserServiceIntTest {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * This repository is mocked in the br.microservice.gotei13.repository.search test package.
+     *
+     * @see br.microservice.gotei13.repository.search.UserSearchRepositoryMockConfiguration
+     */
+    @Autowired
+    private UserSearchRepository mockUserSearchRepository;
 
     @Autowired
     private AuditingHandler auditingHandler;

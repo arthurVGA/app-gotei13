@@ -1,21 +1,26 @@
 version: '2'
 services:
-    gotei13-app:
-        image: gotei13
+    gotei13service-app:
+        image: gotei13service
         environment:
             # - _JAVA_OPTIONS=-Xmx512m -Xms256m
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
             - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-            - SPRING_DATASOURCE_URL=jdbc:sqlserver://gotei13-mssql:1433;database=tempdb
+            - SPRING_DATASOURCE_URL=jdbc:sqlserver://gotei13service-mssql:1433;database=tempdb
             - SECURITY_OAUTH2_CLIENT_CLIENT_ID=internal
             - SECURITY_OAUTH2_CLIENT_CLIENT_SECRET=internal
             - SECURITY_OAUTH2_RESOURCE_USER_INFO_URI=http://keycloak:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
             - JHIPSTER_SLEEP=30 # gives time for the JHipster Registry to boot before the application
-    gotei13-mssql:
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=gotei13service-elasticsearch:9300
+    gotei13service-mssql:
         extends:
             file: mssql.yml
-            service: gotei13-mssql
+            service: gotei13service-mssql
+    gotei13service-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: gotei13service-elasticsearch
     jhipster-registry:
         extends:
             file: jhipster-registry.yml

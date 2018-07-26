@@ -1,6 +1,6 @@
 package br.microservice.gotei13.web.rest.errors;
 
-import br.microservice.gotei13.Gotei13App;
+import br.microservice.gotei13.Gotei13ServiceApp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see ExceptionTranslator
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Gotei13App.class)
+@SpringBootTest(classes = Gotei13ServiceApp.class)
 public class ExceptionTranslatorIntTest {
 
     @Autowired

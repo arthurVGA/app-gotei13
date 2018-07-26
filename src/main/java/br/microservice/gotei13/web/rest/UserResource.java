@@ -2,6 +2,8 @@ package br.microservice.gotei13.web.rest;
 
 import br.microservice.gotei13.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import br.microservice.gotei13.domain.User;
+import br.microservice.gotei13.repository.search.UserSearchRepository;
 import br.microservice.gotei13.security.AuthoritiesConstants;
 import br.microservice.gotei13.service.UserService;
 import br.microservice.gotei13.service.dto.UserDTO;
@@ -19,6 +21,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing users.
@@ -52,9 +58,12 @@ public class UserResource {
 
     private final UserService userService;
 
-    public UserResource(UserService userService) {
+    private final UserSearchRepository userSearchRepository;
+
+    public UserResource(UserService userService, UserSearchRepository userSearchRepository) {
 
         this.userService = userService;
+        this.userSearchRepository = userSearchRepository;
     }
 
     /**
@@ -95,5 +104,20 @@ public class UserResource {
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthoritiesByLogin(login)
                 .map(UserDTO::new));
+    }
+
+    /**
+     * SEARCH /_search/users/:query : search for the User corresponding
+     * to the query.
+     *
+     * @param query the query to search
+     * @return the result of the search
+     */
+    @GetMapping("/_search/users/{query}")
+    @Timed
+    public List<User> search(@PathVariable String query) {
+        return StreamSupport
+            .stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,6 @@
 version: '2'
 services:
-    gotei13-mssql:
+    gotei13service-mssql:
         image: microsoft/mssql-server-linux:latest
         # volumes are not supported on macOS
         # volumes:

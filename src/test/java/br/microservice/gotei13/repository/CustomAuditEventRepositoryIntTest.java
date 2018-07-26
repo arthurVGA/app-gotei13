@@ -1,6 +1,6 @@
 package br.microservice.gotei13.repository;
 
-import br.microservice.gotei13.Gotei13App;
+import br.microservice.gotei13.Gotei13ServiceApp;
 import br.microservice.gotei13.config.Constants;
 import br.microservice.gotei13.config.audit.AuditEventConverter;
 import br.microservice.gotei13.domain.PersistentAuditEvent;
@@ -31,7 +31,7 @@ import static br.microservice.gotei13.repository.CustomAuditEventRepository.EVEN
  * @see CustomAuditEventRepository
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Gotei13App.class)
+@SpringBootTest(classes = Gotei13ServiceApp.class)
 @Transactional
 public class CustomAuditEventRepositoryIntTest {
 

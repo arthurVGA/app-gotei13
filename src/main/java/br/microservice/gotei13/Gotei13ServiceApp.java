@@ -22,18 +22,18 @@ import java.util.Collection;
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 @EnableDiscoveryClient
-public class Gotei13App {
+public class Gotei13ServiceApp {
 
-    private static final Logger log = LoggerFactory.getLogger(Gotei13App.class);
+    private static final Logger log = LoggerFactory.getLogger(Gotei13ServiceApp.class);
 
     private final Environment env;
 
-    public Gotei13App(Environment env) {
+    public Gotei13ServiceApp(Environment env) {
         this.env = env;
     }
 
     /**
-     * Initializes gotei13.
+     * Initializes gotei13Service.
      * <p>
      * Spring profiles can be configured with a program arguments --spring.profiles.active=your-active-profile
      * <p>
@@ -58,7 +58,7 @@ public class Gotei13App {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(Gotei13App.class);
+        SpringApplication app = new SpringApplication(Gotei13ServiceApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         String protocol = "http";

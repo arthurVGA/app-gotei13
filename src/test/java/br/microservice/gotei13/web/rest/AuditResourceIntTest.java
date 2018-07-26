@@ -1,6 +1,6 @@
 package br.microservice.gotei13.web.rest;
 
-import br.microservice.gotei13.Gotei13App;
+import br.microservice.gotei13.Gotei13ServiceApp;
 import br.microservice.gotei13.config.audit.AuditEventConverter;
 import br.microservice.gotei13.domain.PersistentAuditEvent;
 import br.microservice.gotei13.repository.PersistenceAuditEventRepository;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see AuditResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Gotei13App.class)
+@SpringBootTest(classes = Gotei13ServiceApp.class)
 @Transactional
 public class AuditResourceIntTest {
 
